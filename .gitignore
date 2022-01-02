@@ -2,5 +2,4 @@
 .vscode
 node_modules
 package-lock.json
-uzivatele.json
-zpravy.json
+privitani-uzivatele.json
