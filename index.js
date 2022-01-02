@@ -83,34 +83,38 @@ client.on('interactionCreate', async interaction => {
 
 	if (commandName === 'ping2') {
 		await interaction.reply('Pong2!');
-	} else if (commandName === 'hadejcislo') {
-        let volba = interaction.options.get("volba");
-        if (volba) {
-            volba = volba.value.trim();
+	} else if (commandName === 'hadanicisla') {
+        let min = 1;
+        if (interaction.options.get("min")) {
+            min = interaction.options.get("min").value;
         }
-        console.log(volba)
-
+        let max = 10;
+        if (interaction.options.get("max")) {
+            max = interaction.options.get("max").value;
+        }
+        const response = await axios.get("https://nodejs-3260.rostiapp.cz/hadejcislo/noveHadani?min="+min+"&max="+max);
+        idHadani = response.data.id;
+        zprava = response.data.zprava
+        zprava = "**" + zprava + "**"
+        await interaction.reply(zprava);
+    } else if (commandName === 'hadejcislo') {
         let zprava;
-        if (volba && !idHadani) {
+        if (!idHadani) {
             zprava = "** ❗Nejprve zavolej inicializaci hádání bez zadané volby❗ **"
-        } else if (volba) {
+        } else {
+            let p = interaction.options.get("porovnani").value;
             let porovnani = "rovno";
-            if (volba[0] == "<") {
-                porovnani = "mensi";
-            } else if (volba[0] == ">") {
+            if (p == ">") {
                 porovnani = "vetsi";
-            }
-            let cislo = volba.substr(1);
+            } else if (p == "<") {
+                porovnani = "mensi";
+            } 
+            let cislo = interaction.options.get("cislo").value;
             const response = await axios.get('https://nodejs-3260.rostiapp.cz/hadejcislo/odhad?id='+idHadani+"&cislo="+cislo+"&porovnani="+porovnani);
             zprava = response.data.zprava
             if (response.data.vysledek && porovnani == "rovno") {
                 zprava = "**" + zprava + "** 👍"
             }
-        } else {
-            const response = await axios.get('https://nodejs-3260.rostiapp.cz/hadejcislo/noveHadani?min=1&max=10');
-            idHadani = response.data.id;
-            zprava = response.data.zprava
-            zprava = "**" + zprava + "**"
         }
         await interaction.reply(zprava);
 	} else if (commandName === 'mineraly') {

@@ -10,11 +10,30 @@ async function main() {
         
         const commands = [
                 new SlashCommandBuilder().setName('ping2').setDescription('Replies with pong!'),
-                new SlashCommandBuilder().setName('hadejcislo').setDescription('Hadani cisla')
-                        .addStringOption(option =>
-                                option.setName("volba")
-                                        .setDescription("Výběr z možností")
+                new SlashCommandBuilder().setName('hadanicisla').setDescription('Nové hádání čísla')
+                        .addIntegerOption(option =>
+                                option.setName("min")
+                                        .setDescription("Minimum")
                                         .setRequired(false)
+                        )
+                        .addIntegerOption(option =>
+                                option.setName("max")
+                                        .setDescription("Maximum")
+                                        .setRequired(false)
+                        ),
+                new SlashCommandBuilder().setName('hadejcislo').setDescription('Hádání čísla')
+                        .addStringOption(option =>
+                                option.setName("porovnani")
+                                        .setDescription("Porovnání")
+                                        .setRequired(true)
+                                        .addChoice("číslo je rovno", "=")
+                                        .addChoice("číslo je větší než", ">")
+                                        .addChoice("číslo je menší než", "<")
+                        )
+                        .addIntegerOption(option =>
+                                option.setName("cislo")
+                                        .setDescription("Číslo k porovnání")
+                                        .setRequired(true)
                         ),
                 new SlashCommandBuilder().setName('mineraly').setDescription('Tahak - mineraly')
                         .addStringOption(option => {
