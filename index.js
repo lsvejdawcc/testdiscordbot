@@ -81,8 +81,8 @@ client.on('interactionCreate', async interaction => {
 
 	const { commandName } = interaction;
 
-	if (commandName === 'ping2') {
-		await interaction.reply('Pong2!');
+	if (commandName === 'ping') {
+		await interaction.reply('pong');
 	} else if (commandName === 'hadanicisla') {
         let min = 1;
         if (interaction.options.get("min")) {

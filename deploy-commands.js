@@ -9,7 +9,7 @@ async function main() {
         let moznosti_mineraly = (await axios.get('https://nodejs-3260.rostiapp.cz/tahaky/mineraly')).data;
         
         const commands = [
-                new SlashCommandBuilder().setName('ping2').setDescription('Replies with pong!'),
+                new SlashCommandBuilder().setName('ping').setDescription('Replies with pong!'),
                 new SlashCommandBuilder().setName('hadanicisla').setDescription('Nové hádání čísla')
                         .addIntegerOption(option =>
                                 option.setName("min")
