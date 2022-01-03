@@ -12,6 +12,7 @@ client.login(process.env.token);
 let channel
 
 const NUDA_PO_MIN = 5;
+let citacNuda = 0;
 let casovacNuda;
 const SOUBOR_PRIVITANI_UZIVATELE = "privitani-uzivatele.json"
 let privitaniUzivatele = [];
@@ -33,11 +34,16 @@ client.once('ready', client => {
 //     channel.send("Thanks for invite me")
 // })
 
+//reakce na zpravy od uzivatelu
 client.on("messageCreate", async message => {
     console.log(message);
 
-    clearInterval(casovacNuda);
-    casovacNuda = setInterval(jeTuNuda, NUDA_PO_MIN*60000);
+    //restart casovace pro nudu
+    if (message.author.id != client.user.id) {
+        citacNuda = 0;
+        clearInterval(casovacNuda);
+        casovacNuda = setInterval(jeTuNuda, NUDA_PO_MIN*60000);
+    }
 
     if (message.content.includes("debil")) {
 		message.react('😡🦿'); //https://unicode.org/emoji/charts/full-emoji-list.html
@@ -69,7 +75,15 @@ client.on("messageCreate", async message => {
 });
 
 function jeTuNuda() {
-    channel.send("Nuuudaaa 🥱")
+    citacNuda++;
+    if (citacNuda > 3) {
+        clearInterval(casovacNuda);
+        channel.send("😴")
+    } else if (Math.random() < 0.3) {
+        channel.send("Budíííčeeeek! 🤪")
+    } else {
+        channel.send("Nuuudaaa 🥱")
+    }
 }
 
 //commandy je treba pridat do deploy-commands.js a zaregistrovat zavolanim "node deploy-commands.js"
@@ -82,7 +96,7 @@ client.on('interactionCreate', async interaction => {
 	const { commandName } = interaction;
 
 	if (commandName === 'ping') {
-		await interaction.reply('pong');
+		await interaction.reply('🏓pong');
 	} else if (commandName === 'hadanicisla') {
         let min = 1;
         if (interaction.options.get("min")) {
