@@ -4,7 +4,7 @@ const fs = require('fs');
 const { Client, Intents } = require('discord.js');
 
 // Create a new client instance
-const client = new Client({ intents: [Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_MESSAGES, Intents.FLAGS.DIRECT_MESSAGES, Intents.FLAGS.GUILD_BANS] });
+const client = new Client({ intents: [Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_MESSAGES, Intents.FLAGS.DIRECT_MESSAGES, Intents.FLAGS.GUILD_BANS, Intents.FLAGS.GUILD_MEMBERS ] });
 
 // Login to Discord with your client's token
 client.login(process.env.token);
@@ -46,26 +46,22 @@ client.on("messageCreate", async message => {
     }
 
     if (message.content.includes("debil")) {
-		message.react('😡🦿'); //https://unicode.org/emoji/charts/full-emoji-list.html
-        
         let a = await message.guild.members.fetch(message.author.id)
+        message.channel.send(`🦿 Kopanec pro **${a.user.username}**!!!`);
         // https://discord.js.org/#/docs/main/stable/class/GuildMember?scrollTo=kick
-        a.kick('Používá urážky!').then(mem => {message.channel.send(`Kopanec pro ${mem.user.username}!!!`)});
-
+        a.kick('Používá urážky!').catch(err => console.log(err));
     } else if (message.content.includes("prdel")) {
-        message.react('😡🛑');
-        
         let a = await message.guild.members.fetch(message.author.id)
+        message.channel.send(`🚫 Jednodenní ban pro **${a.user.username}**!!!`)
         // https://discord.js.org/#/docs/main/stable/class/GuildMember?scrollTo=ban
-        a.ban({days: 1, reason: 'Je to sprosťák!',}).then(mem => {message.channel.send(`Jednodenní ban pro ${mem.user.username}!!!`)});
-
+        a.ban({days: 1, reason: 'Je to sprosťák!',}).catch(err => console.log(err));
     } else if (message.content.includes("bordel")) {
-		message.react('😡');
+		message.react('😡'); //https://unicode.org/emoji/charts/full-emoji-list.html
         
         let a = await message.guild.members.fetch(message.author.id)
+        message.channel.send(`🛑 **${a.user.username}** má vynucenou pauzičku!`)
         // https://discord.js.org/#/docs/main/stable/class/GuildMember?scrollTo=timeout
-        a.timeout(1 * 60000, 'Je to rebel!').then(mem => {message.channel.send(`${mem.user.username} má vynucenou pauzičku!`)});
-
+        a.timeout(1 * 60000, 'Je to rebel!').catch(err => console.log(err));
     } else if (message.author.id != client.user.id && !privitaniUzivatele.includes(message.author.id)) {
         privitaniUzivatele.push(message.author.id);
         fs.writeFileSync(SOUBOR_PRIVITANI_UZIVATELE, JSON.stringify(privitaniUzivatele));
