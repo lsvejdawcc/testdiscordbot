@@ -7,7 +7,16 @@ const { Routes } = require('discord-api-types/v9');
 
 async function main() {
         let moznosti_mineraly = (await axios.get('https://nodejs-3260.rostiapp.cz/tahaky/mineraly')).data;
-        
+        //tahak 5B
+        let mineraly = (await axios.get('https://tahaky-server-mineraly.lsvejdag8mb.repl.co/')).data
+        console.log(mineraly.length)
+        // console.log(mineraly)
+        // let moznosti_mineraly = [];
+        // for (let m of mineraly) {
+        //         moznosti_mineraly.push(m.mineral);
+        // };
+        console.log(moznosti_mineraly)
+
         const commands = [
                 new SlashCommandBuilder().setName('ping').setDescription('Replies with pong!'),
                 new SlashCommandBuilder().setName('hadanicisla').setDescription('Nové hádání čísla')
